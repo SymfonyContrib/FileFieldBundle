@@ -1,0 +1,7 @@
+filefield_upload:
+    pattern:  /filefield-upload
+    defaults:
+        _controller: FileFieldBundle:Upload:upload
+    requirements:
+        methods:  POST
+        _format:  json

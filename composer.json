@@ -1,0 +1,25 @@
+{
+    "name": "symfonycontrib/filefield-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony2 Advanced File Field Bundle",
+    "keywords": ["Symfony", "bundle", "form", "file", "upload"],
+    "homepage": "http://symfonycontrib.com/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alan Doucette",
+            "email": "dragonwize@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "~2.3.6"
+    },
+    "autoload": {
+        "psr-0": {
+            "SymfonyContrib\\Bundle\\FileFieldBundle\\": ""
+        }
+    },
+    "target-dir": "SymfonyContrib/Bundle/FileFieldBundle"
+}

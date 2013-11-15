@@ -1,0 +1,98 @@
+{% block filefield_widget %}
+{% spaceless %}
+    {% if prototype is defined %}
+        {% set attr = attr|merge({'data-prototype': form_row(prototype) }) %}
+    {% endif %}
+    {% if multiple %}
+        {{ block('filefield_multiple') }}
+    {% else %}
+        {{ block('filefield_single') }}
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
+
+{% block filefield_multiple %}
+{% spaceless %}
+        <table role="presentation" class="table table-striped table-hover">
+            <tbody class="filefield-files">
+                {% if value %}
+                    {{ block('form_widget') }}
+                {% endif %}
+            </tbody>
+        </table>
+    {{ block('filefield_addbtn') }}
+{% endspaceless %}
+{% endblock %}
+
+{% block filefield_single %}
+{% spaceless %}
+    <div class="filefield-files">
+        {% if value %}
+            {{ block('form_widget') }}
+        {% endif %}
+    </div>
+    {{ block('filefield_addbtn') }}
+{% endspaceless %}
+{% endblock %}
+
+{% block filefield_addbtn %}
+{% spaceless %}
+    <div class="filefield-upload btn btn-sm btn-primary fileinput-button" {{ data_attr|raw }}>
+        <span class="glyphicon glyphicon-plus"></span>
+        <span> Add file</span>
+        <input type="file" name="{{ form.vars.id }}"{{ multiple ? ' multiple' : '' }}>
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block filefield_simple_widget %}
+{% spaceless %}
+    {% if multiple %}
+        {{ block('filefield_simple_multiple') }}
+    {% else %}
+        {{ block('filefield_simple_single') }}
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
+
+{% block filefield_simple_multiple %}
+{% spaceless %}
+    <tr class="filefield-file filefield-fileinfo">
+        {% if preview_type %}
+            <td>
+                {{ block('filefield_preview_' ~ preview_type) }}
+            </td>
+        {% endif %}
+        <td>
+            <img src="{{ file.iconUri|default('') }}" class="filefield-fileicon" alt="file icon">&nbsp;
+            <a href="{{ file.url|default('') }}" class="filefield-filename" target="_blank">{{ file.name|default('')|trim(40) }}</a>
+            {{ block('form_widget') }}
+        </td>
+        <td class="filefield-filesize">{{ file.size|default('') }}</td>
+        <td>
+            <button type="button" class="btn btn-xs btn-danger filefield-remove">
+                <span class="glyphicon glyphicon-remove" title="Remove"></span> Remove
+            </button>
+        </td>
+    </tr>
+{% endspaceless %}
+{% endblock %}
+
+{% block filefield_simple_single %}
+{% spaceless %}
+    <div class="filefield-file clearfix">
+        <div class="filefield-fileinfo">
+            {% if preview_type %}
+                {{ block('filefield_preview_' ~ preview_type) }}
+            {% endif %}
+            <img src="{{ file.iconUri|default('') }}" class="filefield-fileicon" alt="file icon">&nbsp;
+            <a href="{{ file.url|default('') }}" class="filefield-filename" target="_blank">{{ file.name|default('')|trim(40) }}</a>&nbsp;
+            (<span class="filefield-filesize">{{ file.size|default('') }}</span>)&nbsp;
+            {{ block('form_widget') }}
+            <button type="button" class="btn btn-xs btn-danger filefield-remove">
+                <span class="glyphicon glyphicon-remove" title="Remove"></span> Remove
+            </button>
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock %}

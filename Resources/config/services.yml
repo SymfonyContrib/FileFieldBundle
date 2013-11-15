@@ -1,0 +1,25 @@
+parameters:
+    filefield.form.type.class: SymfonyContrib\Bundle\FileFieldBundle\Form\Type\FileFieldType
+    filefield.form.type.simple.class: SymfonyContrib\Bundle\FileFieldBundle\Form\Type\FileFieldSimpleType
+    filefield.upload_helper.class: SymfonyContrib\Bundle\FileFieldBundle\Helper\UploadHelper
+    filefield.icon_uri:
+
+services:
+    filefield.form.type:
+        class: %filefield.form.type.class%
+        arguments:
+            - @session
+        tags:
+            - name: form.type
+              alias: filefield
+    filefield.form.type.simple:
+        class: %filefield.form.type.simple.class%
+        arguments:
+            - @filefield.upload_helper
+        tags:
+            - name: form.type
+              alias: filefield_simple
+    filefield.upload_helper:
+        class: %filefield.upload_helper.class%
+        arguments:
+            - %filefield.icon_uri%
