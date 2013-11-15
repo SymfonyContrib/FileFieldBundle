@@ -6,7 +6,7 @@ Provides an advanced file upload form field.
 
 ###Extended by:
 
-* [ImageFieldBundle]()
+* [ImageFieldBundle](https://github.com/SymfonyContrib/ImageFieldBundle)
 
 ###Features:
 
@@ -121,13 +121,11 @@ and the file size.
 
 ## How to Extend, Integrate, and Customize
 
-* [How to create a custom sub-form type.]()
-* [How to use custom jQuery File Upload options.]()
-* [How to use filefield events]()
-* [How to upload directly to an external server.]()
-* [How to forward file from local server to external server.]()
-* [How to customize filename, path, workflow, etc. during upload.]()
+* [How to create a custom filefield display form type.](https://github.com/SymfonyContrib/FileFieldBundle/wiki/How-to-create-a-custom-file-display-form-type)
+* [How to use custom jQuery File Upload options.](https://github.com/SymfonyContrib/FileFieldBundle/wiki/How-to-use-custom-jQuery-File-Upload-options)
+* [How to use filefield events](https://github.com/SymfonyContrib/FileFieldBundle/wiki/How-to-use-filefield-events)
+* [How to upload directly to an external server.](https://github.com/SymfonyContrib/FileFieldBundle/wiki/How-to-forward-file-from-local-server-to-external-server)
+* [How to forward file from local server to external server.](https://github.com/SymfonyContrib/FileFieldBundle/wiki/How-to-upload-directly-to-an-external-server)
+* [How to customize filename, path, workflow, etc. during upload.](https://github.com/SymfonyContrib/FileFieldBundle/wiki/How-to-customize-filename,-path,-workflow,-etc.-during-upload)
 
-* [Example: Doctrine entity just storing the filename.]()
-* [Example: Using FileData (or custom) entity with single upload.]()
-* [Example: Using FileData (or custom) entity with multiple uploads.]()
+* [Example: Doctrine entity just storing the filename.](https://github.com/SymfonyContrib/FileFieldBundle/wiki/Example:-Doctrine-entity-just-storing-the-filename)
