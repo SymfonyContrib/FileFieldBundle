@@ -47,10 +47,12 @@
 
 {% block filefield_simple_widget %}
 {% spaceless %}
-    {% if multiple %}
-        {{ block('filefield_simple_multiple') }}
-    {% else %}
-        {{ block('filefield_simple_single') }}
+    {% if file.name|default(null) or is_prototype %}
+        {% if multiple %}
+            {{ block('filefield_simple_multiple') }}
+        {% else %}
+            {{ block('filefield_simple_single') }}
+        {% endif %}
     {% endif %}
 {% endspaceless %}
 {% endblock %}

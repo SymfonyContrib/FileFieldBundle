@@ -55,6 +55,7 @@ class FileFieldSimpleType extends AbstractType
             'preview_type' => $filefield['preview_type'],
             'file' => $file,
             'type' => $filefield['type'] === 'filefield_simple' ? 'hidden' : $filefield['type'],
+            'is_prototype' => true,// ($view->vars['name'] === $options['prototype_name']),
         ];
 
         $view->vars = array_replace($view->vars, $vars);
