@@ -12,6 +12,12 @@ use SymfonyContrib\Bundle\FileFieldBundle\Event\UploadPostMoveEvent;
 
 class UploadController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public function uploadAction(Request $request)
     {
         $files = $request->files->all();
@@ -37,9 +43,10 @@ class UploadController extends Controller
                 }
 
                 $name = $file->getClientOriginalName();
-                $size = $file->getSize();
+                $size = $helper->formatSize($file->getSize());
                 $mime = strtolower($file->getMimeType());
                 $icon = $helper->getFileIcon($mime);
+                $iconUri = $helper->getIconUri() . $icon;
 
                 // Move file(s) to permanent location.
                 $file->move($uploadDir, $name);
@@ -47,10 +54,29 @@ class UploadController extends Controller
                 // Build a ajax response.
                 $response = [
                     'name' => $name,
-                    'size' => $helper->formatSize($size),
+                    'size' => $size,
                     'mime' => $mime,
-                    'url' => $uri . $name,
-                    'iconUri' => $helper->getIconUri() . $icon,
+                    'uri' => $uri . $name,
+                    'iconUri' => $iconUri,
+                    'template' => [
+                        '.filefield-filename' => [
+                            'text' => substr($name, 0, 40),
+                            'attr' => [
+                                'href' => $uri . $name,
+                            ],
+                        ],
+                        '.filefield-filesize' => [
+                            'text' => $size,
+                        ],
+                        '.filefield-fileicon' => [
+                            'attr' => [
+                                'src' => $iconUri,
+                            ]
+                        ],
+                        '.filefield-value' => [
+                            'val' => $uri . $name,
+                        ]
+                    ],
                 ];
             }
 
@@ -76,6 +102,5 @@ class UploadController extends Controller
 
         return new JsonResponse(['files' => $postMoveEvent->getResponse()]);
     }
-
 
 }

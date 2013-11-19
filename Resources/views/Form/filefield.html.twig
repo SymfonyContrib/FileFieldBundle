@@ -65,7 +65,7 @@
         {% endif %}
         <td>
             <img src="{{ file.iconUri|default('') }}" class="filefield-fileicon" alt="file icon">&nbsp;
-            <a href="{{ file.url|default('') }}" class="filefield-filename" target="_blank">{{ file.name|default('')|trim(40) }}</a>
+            <a href="{{ file.uri|default('') }}" class="filefield-filename" target="_blank">{{ file.name|default('')|trim(40) }}</a>
             {{ block('form_widget') }}
         </td>
         <td class="filefield-filesize">{{ file.size|default('') }}</td>
@@ -86,7 +86,7 @@
                 {{ block('filefield_preview_' ~ preview_type) }}
             {% endif %}
             <img src="{{ file.iconUri|default('') }}" class="filefield-fileicon" alt="file icon">&nbsp;
-            <a href="{{ file.url|default('') }}" class="filefield-filename" target="_blank">{{ file.name|default('')|trim(40) }}</a>&nbsp;
+            <a href="{{ file.uri|default('') }}" class="filefield-filename" target="_blank">{{ file.name|default('')|trim(40) }}</a>&nbsp;
             (<span class="filefield-filesize">{{ file.size|default('') }}</span>)&nbsp;
             {{ block('form_widget') }}
             <button type="button" class="btn btn-xs btn-danger filefield-remove">

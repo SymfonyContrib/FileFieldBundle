@@ -18,8 +18,7 @@
 
     $.blueimp.fileupload.prototype._specialOptions.push(
         'filesContainer',
-        'uploadTemplateId',
-        'downloadTemplateId'
+        'fieldname'
     );
 
     // The UI version extends the file upload widget
@@ -34,6 +33,9 @@
             // The container for the list of files. If undefined, it is set to
             // an element with class "files" inside of the widget element:
             filesContainer: $('.filefield-files'),
+            // The field name for using in the prototype template on single
+            // style fields.
+            fieldname: 'filename',
             // By default, files are appended to the files container.
             // Set the following option to true, to prepend files instead:
             prependFiles: false,
@@ -330,7 +332,7 @@
             if (bytes >= 1000000) {
                 return (bytes / 1000000).toFixed(2) + ' MB';
             }
-            return (bytes / 1000).toFixed(2) + ' KB';
+            return (bytes / 1000).toFixed(2) + ' kB';
         },
 
         _formatBitrate: function (bits) {
@@ -491,12 +493,47 @@
             return $(template);
         },
 
+        setFileData: function (file, $template) {
+            for (var selector in file.template) {
+                if (!file.template.hasOwnProperty(selector)) {
+                    continue;
+                }
+
+                for (var func in file.template[selector]) {
+                    if (!file.template[selector].hasOwnProperty(func)) {
+                        continue;
+                    }
+
+                    switch (func) {
+                        case 'attr':
+                        case 'prop':
+                            for (var key in file.template[selector][func]) {
+                                if (!file.template[selector][func].hasOwnProperty(key)) {
+                                    continue;
+                                }
+                                $template.find(selector)[func](key, file.template[selector][func][key]);
+                            }
+                            break;
+
+                        case 'text':
+                        case 'html':
+                        case 'val':
+                        case 'replace':
+                        case 'append':
+                        case 'prepend':
+                            $template.find(selector)[func](file.template[selector][func]);
+                            break;
+                    }
+                }
+            }
+        },
+
         renderFiles: function (files) {
             var $result = $([]);
             for (var i = 0, c = files.length; i < c; i++) {
-                var name = this.options.maxNumberOfFiles === 1 ? 'filename' : this.formLeafName;
+                var name = this.options.maxNumberOfFiles === 1 ? this.options.fieldname : this.formLeafName;
                 var $template = this.getFileTemplate(name);
-                filefield.setFileData(files[i], $template);
+                this.setFileData(files[i], $template);
                 $result = $result.add($template);
                 this.formLeafName++;
             }
@@ -506,7 +543,7 @@
         renderSuccess: function (files, node) {
             for (var i = 0, c = files.length; i < c; i++) {
                 var file = files[i];
-                filefield.setFileData(file, node);
+                this.setFileData(file, node);
             }
             return node;
         },

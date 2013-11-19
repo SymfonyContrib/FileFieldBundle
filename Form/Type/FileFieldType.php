@@ -49,7 +49,8 @@ class FileFieldType extends AbstractType
 
             $builder->addEventSubscriber($resizeListener);
         } else {
-            $builder->add('filename', $options['type'], $options['options']);
+            $name = $options['type'] === 'filefield_simple' ? 'filename' : $builder->getName();
+            $builder->add($name, $options['type'], $options['options']);
         }
     }
 
@@ -66,6 +67,9 @@ class FileFieldType extends AbstractType
         } else {
             // Force limit to 1 for single.
             $options['limit'] = 1;
+            // Set fieldname to form fieldname.
+            $name = $options['type'] === 'filefield_simple' ? 'filename' : $view->vars['name'];
+            $options['js_options']['fieldname'] = $name;
         }
 
         if ($form->getConfig()->hasAttribute('prototype')) {
