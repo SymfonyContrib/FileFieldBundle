@@ -115,6 +115,8 @@ class FileFieldType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        global $kernel;
+
         $optionsNormalizer = function (Options $options, $value) {
             $value['block_name'] = 'entry';
 
@@ -124,8 +126,8 @@ class FileFieldType extends AbstractType
         $resolver->setDefaults([
             'multiple' => false,
             'limit' => 1,
-            'upload_dir' => '',
-            'uri' => '',
+            'upload_dir' => realpath($kernel->getRootDir() . '/../web/uploads'),
+            'uri' => '/uploads/',
             'enable_cors' => false,
             'js_options' => [],
             'preview_type' => null,

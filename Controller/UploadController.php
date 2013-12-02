@@ -20,6 +20,13 @@ class UploadController extends Controller
      */
     public function uploadAction(Request $request)
     {
+        // @todo This method is insecure. Need to implement a CSFR check.
+
+        global $kernel;
+
+        $defaultUploadDir = realpath($kernel->getRootDir() . '/../web/uploads');
+        $defaultUri = '/uploads/';
+
         $files = $request->files->all();
 
         // Fire the pre-move event.
@@ -33,8 +40,8 @@ class UploadController extends Controller
         $responses = [];
         foreach ($files as $formId => $file) {
             $ns = 'filefield/' . $formId . '/';
-            $uploadDir = $session->get($ns . 'uploadDir', null);
-            $uri = $session->get($ns . 'uri', null);
+            $uploadDir = $session->get($ns . 'uploadDir', $defaultUploadDir);
+            $uri = $session->get($ns . 'uri', $defaultUri);
 
             $response = null;
             if ($preMoveEvent->isDefaultMoveAllowed()) {
