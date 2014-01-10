@@ -49,7 +49,10 @@ class UploadController extends Controller
                     throw new \Exception('Missing uploadDir or uri.');
                 }
 
-                $name = $file->getClientOriginalName();
+                // @todo: Need to limit extension base on configuration.
+                $ext  = $file->getClientOriginalExtension();
+                $name = basename($file->getClientOriginalName(), $ext);
+                $name = $helper->getSaveName($name) . '.' . $ext;
                 $size = $helper->formatSize($file->getSize());
                 $mime = strtolower($file->getMimeType());
                 $icon = $helper->getFileIcon($mime);

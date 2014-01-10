@@ -9,9 +9,33 @@ class UploadHelper
 {
     protected $iconUri;
 
-    public function __construct($iconUri)
+    public function __construct($iconUri = null)
     {
         $this->iconUri = $iconUri;
+    }
+
+    public function getSaveName($originalName)
+    {
+        return $this->cleanName($originalName) . '-' . $this->hashName($originalName);
+    }
+
+    public function cleanName($originalName)
+    {
+        // Lowercase.
+        $name = strtolower($originalName);
+        // Replace spaces and _ with -.
+        $name = preg_replace('/(\s|_+|-+)+/', '-', $name);
+        // Trim - from ends.
+        $name = trim($name, '-');
+        // Remove all except alpha-numeric and - characters.
+        $name = preg_replace('/[^a-z0-9-]+/', '', $name);
+
+        return $name;
+    }
+
+    public function hashName($name)
+    {
+        return base_convert(hash('crc32', $name . $_SERVER['REQUEST_TIME']), 16, 36);
     }
 
     /**
@@ -24,6 +48,11 @@ class UploadHelper
     public function getFileIcon($mime)
     {
         return $this->fileMimeMap($mime);
+    }
+
+    public function setIconUri($iconUri)
+    {
+        return $this->iconUri = $iconUri;
     }
 
     public function getIconUri()
