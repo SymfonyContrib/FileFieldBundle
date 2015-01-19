@@ -82,7 +82,7 @@
                         }
                     });
                     if (that.options.getNumberOfFiles() >= that.options.maxNumberOfFiles) {
-                        $('.fileinput-button').hide();
+                        $this.hide();
                     }
                 });
             },

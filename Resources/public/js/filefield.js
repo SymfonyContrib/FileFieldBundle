@@ -35,18 +35,29 @@ var filefield = {};
     var id = $('.filefield-value').attr('id');
 
     // Initialize the jQuery File Upload widget:
-    $fields.fileupload({
-        // Uncomment the following to send cross-domain cookies:
-        //xhrFields: {withCredentials: true},
-        url: '/filefield-upload',
-        // Drag & drop zone is the widget wrapper.
-        dropZone: $(this).parent(),
-        // Disable paste support for now. Only supported in Chrome.
-        pasteZone: null,
-        singleFileUploads: true,
-        limitMultiFileUploads: 0,
-        sequentialUploads: false,
-        limitConcurrentUploads: 4
+    $fields.each(function () {
+        // Single file template
+        var filesContainer = $(this).prev('.filefield-files');
+        if (!filesContainer.length) {
+            // Multiple file template
+            filesContainer = $(this).prev('table').find('.filefield-files');
+        }
+
+        $(this).fileupload({
+            // Uncomment the following to send cross-domain cookies:
+            //xhrFields: {withCredentials: true},
+            url: '/filefield-upload',
+            fileInput: $('input:file', this),
+            // Drag & drop zone is the widget wrapper.
+            dropZone: $(this).parent(),
+            // Disable paste support for now. Only supported in Chrome.
+            pasteZone: null,
+            singleFileUploads: true,
+            limitMultiFileUploads: 0,
+            sequentialUploads: false,
+            limitConcurrentUploads: 4,
+            filesContainer: filesContainer
+        });
     });
 
     // Attach events for remove buttons.

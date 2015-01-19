@@ -26,7 +26,7 @@
 
 {% block filefield_single %}
 {% spaceless %}
-    <div class="filefield-files">
+    <div id="filefield-files-{{ form.vars.name }}" class="filefield-files">
         {% if value %}
             {{ block('form_widget') }}
         {% endif %}
