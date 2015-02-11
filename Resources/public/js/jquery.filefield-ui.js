@@ -487,8 +487,7 @@
 
         getFileTemplate: function (name) {
             // Get a file display template and set values.
-            var template = $(this.element).parents('[data-prototype]').attr('data-prototype');
-            template = template.replace(/__name__/g, name);
+            var template = $(this.element).attr('data-prototype').replace(/__name__/g, name);
 
             return $(template);
         },

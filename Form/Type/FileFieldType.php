@@ -61,7 +61,7 @@ class FileFieldType extends AbstractType
     {
         if ($options['multiple']) {
             $view->vars = array_replace($view->vars, array(
-                'allow_add' => $options['allow_add'],
+                'allow_add'    => $options['allow_add'],
                 'allow_delete' => $options['allow_delete'],
             ));
         } else {
@@ -76,22 +76,22 @@ class FileFieldType extends AbstractType
             $view->vars['prototype'] = $form->getConfig()->getAttribute('prototype')->createView($view);
         }
 
-        $uri = $options['uri'];
+        $uri       = $options['uri'];
         $uploadDir = $options['upload_dir'];
 
         // Prepare data-attributes.
         $options['js_options']['maxNumberOfFiles'] = $options['limit'];
-        $dataAttr = '';
+        $dataAttr = [];
         foreach ($options['js_options'] as $key => $value) {
             $key = strtolower(preg_replace('/([A-Z])/', '-$1', $key));
-            $dataAttr .= ' data-' . $key . '="' . $value . '"';
+            $dataAttr['data-' . $key] = $value;
         }
 
         $view->vars = array_replace($view->vars, [
-            'multiple' => $options['multiple'],
-            'limit' => $options['limit'],
-            'data_attr' => $dataAttr,
-            'uri' => $options['uri'],
+            'multiple'     => $options['multiple'],
+            'limit'        => $options['limit'],
+            'data_attr'    => $dataAttr,
+            'uri'          => $options['uri'],
             'preview_type' => $options['preview_type'],
         ]);
 
@@ -124,20 +124,20 @@ class FileFieldType extends AbstractType
         };
 
         $resolver->setDefaults([
-            'multiple' => false,
-            'limit' => 1,
-            'upload_dir' => realpath($kernel->getRootDir() . '/../web/uploads'),
-            'uri' => '/uploads/',
-            'enable_cors' => false,
-            'js_options' => [],
-            'preview_type' => null,
-            'type' => 'filefield_simple',
-            'options' => [],
+            'multiple'                  => false,
+            'limit'                     => 1,
+            'upload_dir'                => realpath($kernel->getRootDir() . '/../web/uploads'),
+            'uri'                       => '/uploads/',
+            'enable_cors'               => false,
+            'js_options'                => [],
+            'preview_type'              => null,
+            'type'                      => 'filefield_simple',
+            'options'                   => [],
             'include_filefield_options' => true,
-            'allow_add' => false,
-            'allow_delete' => false,
-            'prototype' => true,
-            'prototype_name' => '__name__',
+            'allow_add'                 => false,
+            'allow_delete'              => false,
+            'prototype'                 => true,
+            'prototype_name'            => '__name__',
         ]);
 
         $resolver->setNormalizers(array(
@@ -152,5 +152,4 @@ class FileFieldType extends AbstractType
     {
         return 'filefield';
     }
-
 }

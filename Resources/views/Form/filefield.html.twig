@@ -1,7 +1,7 @@
 {% block filefield_widget %}
 {% spaceless %}
     {% if prototype is defined %}
-        {% set attr = attr|merge({'data-prototype': form_row(prototype) }) %}
+        {% set data_attr = data_attr|merge({'data-prototype': form_row(prototype) }) %}
     {% endif %}
     {% if multiple %}
         {{ block('filefield_multiple') }}
@@ -13,13 +13,13 @@
 
 {% block filefield_multiple %}
 {% spaceless %}
-        <table role="presentation" class="table table-striped table-hover">
-            <tbody class="filefield-files">
-                {% if value %}
-                    {{ block('form_widget') }}
-                {% endif %}
-            </tbody>
-        </table>
+    <table role="presentation" class="table table-striped table-hover">
+        <tbody class="filefield-files">
+            {% if value %}
+                {{ block('form_widget') }}
+            {% endif %}
+        </tbody>
+    </table>
     {{ block('filefield_addbtn') }}
 {% endspaceless %}
 {% endblock %}
@@ -37,7 +37,7 @@
 
 {% block filefield_addbtn %}
 {% spaceless %}
-    <div class="filefield-upload btn btn-sm btn-primary fileinput-button" {{ data_attr|raw }}>
+    <div class="filefield-upload btn btn-sm btn-primary fileinput-button"{{ block('filefield_widget_data_attributes') }}>
         <span class="glyphicon glyphicon-plus"></span>
         <span> Add file</span>
         <input type="file" name="{{ form.vars.id }}"{{ multiple ? ' multiple' : '' }}>
@@ -98,3 +98,10 @@
     </div>
 {% endspaceless %}
 {% endblock %}
+
+{%- block filefield_widget_data_attributes -%}
+    {%- for attrname, attrvalue in data_attr -%}
+        {{- " " -}}
+        {{- attrname }}="{{ attrvalue }}"
+    {%- endfor -%}
+{%- endblock -%}

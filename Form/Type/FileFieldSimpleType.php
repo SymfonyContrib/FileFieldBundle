@@ -43,18 +43,18 @@ class FileFieldSimpleType extends AbstractType
             }
             $icon = $this->helper->getFileIcon($mime);
             $file = [
-                'name' => $name,
+                'name'    => $name,
                 'iconUri' => $this->helper->getIconUri() . $icon,
-                'size' => $this->helper->formatSize($size),
-                'uri' => $filefield['uri'] . $name,
+                'size'    => $this->helper->formatSize($size),
+                'uri'     => $filefield['uri'] . $name,
             ];
         }
 
         $vars = [
-            'multiple' => $filefield['multiple'],
+            'multiple'     => $filefield['multiple'],
             'preview_type' => $filefield['preview_type'],
-            'file' => $file,
-            'type' => $filefield['type'] === 'filefield_simple' ? 'hidden' : $filefield['type'],
+            'file'         => $file,
+            'type'         => $filefield['type'] === 'filefield_simple' ? 'hidden' : $filefield['type'],
             'is_prototype' => ($view->vars['name'] === $filefield['prototype_name']),
         ];
 
