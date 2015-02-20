@@ -3,11 +3,13 @@
     {% if prototype is defined %}
         {% set data_attr = data_attr|merge({'data-prototype': form_row(prototype) }) %}
     {% endif %}
-    {% if multiple %}
-        {{ block('filefield_multiple') }}
-    {% else %}
-        {{ block('filefield_single') }}
-    {% endif %}
+    <div class="filefield-widget">
+        {% if multiple %}
+            {{ block('filefield_multiple') }}
+        {% else %}
+            {{ block('filefield_single') }}
+        {% endif %}
+    </div>
 {% endspaceless %}
 {% endblock %}
 
@@ -66,11 +68,11 @@
             </td>
         {% endif %}
         <td>
-            <img src="{{ file.iconUri|default('') }}" class="filefield-fileicon" alt="file icon">&nbsp;
-            <a href="{{ file.uri|default('') }}" class="filefield-filename" target="_blank">{{ file.name|default('')|trim(40) }}</a>
+            <img src="{{ form.vars.is_prototype ? '' : file.iconUri|default('') }}" class="filefield-fileicon" alt="file icon">&nbsp;
+            <a href="{{ form.vars.is_prototype ? '' : file.uri|default('') }}" class="filefield-filename" target="_blank">{{ form.vars.is_prototype ? '' : file.name|default('')|trim(40) }}</a>
             {{ block('form_widget') }}
         </td>
-        <td class="filefield-filesize">{{ file.size|default('') }}</td>
+        <td class="filefield-filesize">{{ form.vars.is_prototype ? '' : file.size|default('') }}</td>
         <td>
             <button type="button" class="btn btn-xs btn-danger filefield-remove">
                 <span class="glyphicon glyphicon-remove" title="Remove"></span> Remove
@@ -87,9 +89,9 @@
             {% if preview_type %}
                 {{ block('filefield_preview_' ~ preview_type) }}
             {% endif %}
-            <img src="{{ file.iconUri|default('') }}" class="filefield-fileicon" alt="file icon">&nbsp;
-            <a href="{{ file.uri|default('') }}" class="filefield-filename" target="_blank">{{ file.name|default('')|trim(40) }}</a>&nbsp;
-            (<span class="filefield-filesize">{{ file.size|default('') }}</span>)&nbsp;
+            <img src="{{ form.vars.is_prototype ? '' : file.iconUri|default('') }}" class="filefield-fileicon" alt="file icon">&nbsp;
+            <a href="{{ file.uri|default('') }}" class="filefield-filename" target="_blank">{{ form.vars.is_prototype ? '' : file.name|default('')|trim(40) }}</a>&nbsp;
+            (<span class="filefield-filesize">{{ form.vars.is_prototype ? '' : file.size|default('') }}</span>)&nbsp;
             {{ block('form_widget') }}
             <button type="button" class="btn btn-xs btn-danger filefield-remove">
                 <span class="glyphicon glyphicon-remove" title="Remove"></span> Remove

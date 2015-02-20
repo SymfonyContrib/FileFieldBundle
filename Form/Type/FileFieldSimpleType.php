@@ -26,7 +26,7 @@ class FileFieldSimpleType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $filefield = $options['filefield_options'];
-        $data = $filefield['multiple'] ? $view->vars['value'] : $view->parent->vars['value'];
+        $data      = $filefield['multiple'] ? $view->vars['value'] : $view->parent->vars['value'];
 
         $file = [];
         if (!empty($data)) {

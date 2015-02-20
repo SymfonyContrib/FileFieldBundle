@@ -32,7 +32,7 @@
             autoUpload: true,
             // The container for the list of files. If undefined, it is set to
             // an element with class "files" inside of the widget element:
-            filesContainer: $('.filefield-files'),
+            //filesContainer: $('.filefield-files'),
             // The field name for using in the prototype template on single
             // style fields.
             fieldname: 'filename',
@@ -46,6 +46,7 @@
             // Function returning the current number of files,
             // used by the maxNumberOfFiles validation:
             getNumberOfFiles: function () {
+                console.log(this.filesContainer.children().length);
                 return this.filesContainer.children().length;
             },
 
@@ -480,7 +481,7 @@
                 this._disableFileInputButton();
             }
             if (this.options.getNumberOfFiles() >= this.options.maxNumberOfFiles) {
-                $('.fileinput-button').hide();
+                this.element.hide();
             }
             this.formLeafName = this.options.getNumberOfFiles();
         },
@@ -489,7 +490,7 @@
             // Get a file display template and set values.
             var template = $(this.element).attr('data-prototype').replace(/__name__/g, name);
 
-            return $(template);
+            return $(template).clone();
         },
 
         setFileData: function (file, $template) {
