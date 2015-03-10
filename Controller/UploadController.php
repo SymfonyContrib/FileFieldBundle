@@ -25,13 +25,13 @@ class UploadController extends Controller
         global $kernel;
 
         $defaultUploadDir = realpath($kernel->getRootDir() . '/../web/uploads');
-        $defaultUri = '/uploads/';
+        $defaultUri       = '/uploads/';
 
         $files = $request->files->all();
 
         // Fire the pre-move event.
         $preMoveEvent = new UploadPreMoveEvent($files);
-        $dispatcher = $this->get('event_dispatcher');
+        $dispatcher   = $this->get('event_dispatcher');
         $dispatcher->dispatch('filefield.upload.pre_move', $preMoveEvent);
 
         $session = $this->get('session');
@@ -39,9 +39,9 @@ class UploadController extends Controller
 
         $responses = [];
         foreach ($files as $formId => $file) {
-            $ns = 'filefield/' . $formId . '/';
+            $ns        = 'filefield/' . $formId . '/';
             $uploadDir = $session->get($ns . 'uploadDir', $defaultUploadDir);
-            $uri = $session->get($ns . 'uri', $defaultUri);
+            $uri       = $session->get($ns . 'uri', $defaultUri);
 
             $response = null;
             if ($preMoveEvent->isDefaultMoveAllowed()) {
@@ -50,12 +50,12 @@ class UploadController extends Controller
                 }
 
                 // @todo: Need to limit extension base on configuration.
-                $ext  = $file->getClientOriginalExtension();
-                $name = basename($file->getClientOriginalName(), $ext);
-                $name = $helper->getSaveName($name) . '.' . $ext;
-                $size = $helper->formatSize($file->getSize());
-                $mime = strtolower($file->getMimeType());
-                $icon = $helper->getFileIcon($mime);
+                $ext     = $file->getClientOriginalExtension();
+                $name    = basename($file->getClientOriginalName(), $ext);
+                $name    = $helper->getSaveName($name) . '.' . $ext;
+                $size    = $helper->formatSize($file->getSize());
+                $mime    = strtolower($file->getMimeType());
+                $icon    = $helper->getFileIcon($mime);
                 $iconUri = $helper->getIconUri() . $icon;
 
                 // Move file(s) to permanent location.
@@ -63,11 +63,11 @@ class UploadController extends Controller
 
                 // Build a ajax response.
                 $response = [
-                    'name' => $name,
-                    'size' => $size,
-                    'mime' => $mime,
-                    'uri' => $uri . $name,
-                    'iconUri' => $iconUri,
+                    'name'     => $name,
+                    'size'     => $size,
+                    'mime'     => $mime,
+                    'uri'      => $uri . $name,
+                    'iconUri'  => $iconUri,
                     'template' => [
                         '.filefield-filename' => [
                             'text' => substr($name, 0, 40),

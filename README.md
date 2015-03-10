@@ -45,6 +45,16 @@ new SymfonyContrib\Bundle\FileFieldBundle\FileFieldBundle(),
 * Include CSS file
     * 'bundles/filefield/css/jquery.fileupload-ui.css'
 
+## Configure
+
+By default the bundle loads a form template to them the default fields. If you want to customize 
+filefield theming, you can disable loading of the default template by setting
+
+```yml
+# app/config/parameters.yml
+filefield.load_form_template: false
+``` 
+
 ## Usage Examples
 
 [More examples]()

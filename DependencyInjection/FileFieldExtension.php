@@ -39,10 +39,11 @@ class FileFieldExtension extends Extension implements PrependExtensionInterface
      */
     public function prepend(ContainerBuilder $container)
     {
-        $bundles = $container->getParameter('kernel.bundles');
+        $bundles      = $container->getParameter('kernel.bundles');
+        $loadTemplate = $container->hasParameter('filefield.load_form_template') ? $container->getParameter('filefield.load_form_template') : true;
 
         // Configure TwigBundle
-        if (isset($bundles['TwigBundle'])) {
+        if ($loadTemplate && isset($bundles['TwigBundle'])) {
             $this->configureTwigBundle($container);
         }
     }
@@ -55,29 +56,31 @@ class FileFieldExtension extends Extension implements PrependExtensionInterface
     private function configureTwigBundle(ContainerBuilder $container)
     {
         // Get the twig configurations.
-        $name = 'twig';
-        $configs = $container->getExtensionConfig($name);
+        $name       = 'twig';
+        $configs    = $container->getExtensionConfig($name);
+        $formConfig = [
+            'form' => [
+                'resources' => [$this->formTemplate],
+            ],
+        ];
 
         // Find any existing configurations and add to it them so when the
         // configs are merged they do not overwrite each other.
         foreach ($configs as $config) {
             if (isset($config['form'])) {
                 $formConfig = ['form' => $config['form']];
-            }
-        }
 
-        // Update or create the configuration.
-        if (!empty($formConfig)) {
-            $formConfig['form']['resources'][] = $this->formTemplate;
-        } else {
-            $formConfig = [
-                'form' => [
-                    'resources' => [$this->formTemplate]
-                ]
-            ];
+                $formConfig['form']['resources'][] = $this->formTemplate;
+                break;
+            }
         }
 
         // Prepend our configuration.
         $container->prependExtensionConfig($name, $formConfig);
+    }
+
+    public function getAlias()
+    {
+        return 'filefield';
     }
 }
