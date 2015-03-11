@@ -46,7 +46,6 @@
             // Function returning the current number of files,
             // used by the maxNumberOfFiles validation:
             getNumberOfFiles: function () {
-                console.log(this.filesContainer.children().length);
                 return this.filesContainer.children().length;
             },
 
