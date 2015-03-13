@@ -110,7 +110,12 @@ class UploadController extends Controller
         $dispatcher = $this->get('event_dispatcher');
         $dispatcher->dispatch('filefield.upload.post_move', $postMoveEvent);
 
-        return new JsonResponse(['files' => $postMoveEvent->getResponse()]);
+        $response = new JsonResponse(['files' => $postMoveEvent->getResponse()]);
+        if (!in_array('application/json', $request->getAcceptableContentTypes())) {
+            $response->headers->set('Content-Type', 'text/plain');
+        }
+
+        return $response;
     }
 
 }
