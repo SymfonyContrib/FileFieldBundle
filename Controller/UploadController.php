@@ -3,6 +3,7 @@
 namespace SymfonyContrib\Bundle\FileFieldBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -50,8 +51,9 @@ class UploadController extends Controller
                 }
 
                 // Ensure upload directory exists.
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
+                $fs = new Filesystem();
+                if (!$fs->exists($uploadDir)) {
+                    $fs->mkdir($uploadDir);
                 }
 
                 // @todo: Need to limit extension base on configuration.
