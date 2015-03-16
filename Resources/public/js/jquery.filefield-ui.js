@@ -61,14 +61,17 @@
             // widget (via file input selection, drag & drop or add API call).
             // See the basic file upload widget for more information:
             add: function (e, data) {
-                var $this = $(this);
-                var that = $this.data('blueimp-fileupload');
+                var $this   = $(this);
+                var that    = $this.data('blueimp-fileupload');
                 var options = that.options;
-                var files = data.files;
+                var files   = data.files;
 
                 data.process(function () {
                     return $this.fileupload('process', data);
                 }).always(function () {
+                    if (data.files.error) {
+                        return;
+                    }
                     data.context = that.renderFiles(files).data('data', data);
                     //that._renderPreviews(data);
                     var where = options.prependFiles ? 'prepend' : 'append';
@@ -76,7 +79,7 @@
                     that._forceReflow(data.context);
                     that._transition(data.context).done(function () {
                         var added = that._trigger('added', e, data);
-                        if ((added !== false) && options.autoUpload && !data.files.error) {
+                        if ((added !== false) && options.autoUpload) {
                             filefield.setProgressBar(data.context);
                             data.submit();
                         }
@@ -263,7 +266,8 @@
             },
 
             processfail: function (event, data) {
-                //filefield.setFailure(data.files[0]);
+                var that = $(this).data('blueimp-fileupload');
+                that.renderFailure(event.target, data.files[0]);
             },
 
             // Callback for file deletion:
@@ -544,7 +548,18 @@
                 var file = files[i];
                 this.setFileData(file, node);
             }
+            this.getErrorContainer(this.element).hide();
             return node;
+        },
+
+        renderFailure: function (fileBtn, file) {
+            var $errorContainer = this.getErrorContainer(fileBtn);
+            $errorContainer.find('.filefield-error').html(file.error);
+            $errorContainer.show();
+        },
+
+        getErrorContainer: function (fileBtn) {
+            return $(fileBtn).parents('.filefield-widget').find('.filefield-errors');
         },
 
         enable: function () {

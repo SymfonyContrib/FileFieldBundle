@@ -4,6 +4,10 @@
         {% set data_attr = data_attr|merge({'data-prototype': form_row(prototype) }) %}
     {% endif %}
     <div class="filefield-widget">
+        <div class="filefield-errors alert alert-danger" style="display: none;">
+            <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+            <strong><span class="filefield-error"></span></strong>
+        </div>
         {% if multiple %}
             {{ block('filefield_multiple') }}
         {% else %}

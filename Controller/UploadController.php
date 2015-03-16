@@ -20,7 +20,7 @@ class UploadController extends Controller
      */
     public function uploadAction(Request $request)
     {
-        // @todo This method is insecure. Need to implement a CSFR check.
+        // @todo This method is insecure. Need to implement a CSFR check?
 
         global $kernel;
 
@@ -49,9 +49,14 @@ class UploadController extends Controller
                     throw new \Exception('Missing uploadDir or uri.');
                 }
 
+                // Ensure upload directory exists.
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
                 // @todo: Need to limit extension base on configuration.
-                $ext     = $file->getClientOriginalExtension();
-                $name    = basename($file->getClientOriginalName(), $ext);
+                $ext     = strtolower($file->getClientOriginalExtension());
+                $name    = basename(strtolower($file->getClientOriginalName()), $ext);
                 $name    = $helper->getSaveName($name) . '.' . $ext;
                 $size    = $helper->formatSize($file->getSize());
                 $mime    = strtolower($file->getMimeType());
