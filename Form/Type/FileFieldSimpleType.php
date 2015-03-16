@@ -49,7 +49,7 @@ class FileFieldSimpleType extends AbstractType
             } else {
                 throw new \Exception('Array or object expected.');
             }
-            $uri  = $filefield['uri'] . $name;
+            $uri  = isset($data['uri']) ? $data['uri'] : $filefield['uri'] . $name;
             $icon = $this->helper->getFileIcon($mime);
             $file = [
                 'name'    => $name,
