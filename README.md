@@ -47,8 +47,8 @@ new SymfonyContrib\Bundle\FileFieldBundle\FileFieldBundle(),
 
 ## Configure
 
-By default the bundle loads a form template to them the default fields. If you want to customize 
-filefield theming, you can disable loading of the default template by setting
+By default the bundle loads a form template to theme the default fields. If you want to customize 
+filefield themeing, you can disable loading of the default template by setting
 
 ```yml
 # app/config/parameters.yml
@@ -59,46 +59,42 @@ filefield.load_form_template: false
 
 [More examples]()
 
-**Simple single file upload backed by an array:
+**Simple single file upload backed by an array:**
 
 ```php
+// Only URI is required.
 $data = [
-    'filename' => 'examplefile.txt',
+    'name'      => 'examplefile.txt',
     'mime_type' => 'text/plain',
-    'size' => 50,
+    'size'      => 50,
+    'uri'       => '/uploads/examplefile.txt',
 ];
 
 ...
 
+// These are the only two required options but there are many more.
 $builder->add('file', 'filefield', [
-    'upload_dir' => realpath($kernel->getRootDir() . '/../web/files'),
-    'uri' => '/files/',
+    'upload_dir' => '/absolute/system/path/to/upload/dir/web/uploads',
+    'uri'        => '/uploads/',
 ]);
 ```
 
-**Simple multi-file upload backed by an array of arrays.
+**Simple multi-file upload backed by an array of File objects.**
+
 ```php
 $data = [
-    [
-        'filename' => 'examplefile.txt',
-        'mime_type' => 'text/plain',
-        'size' => 50,
-    ],
-    [
-        'filename' => 'examplefile2.txt',
-        'mime_type' => 'text/plain',
-        'size' => 100,
-    ],
+    new File('/path/to/file'),
+    new File('/path/to/file'),
 ];
 
 ...
 
 $builder->add('files', 'filefield', [
-    'upload_dir' => realpath($kernel->getRootDir() . '/../web/files'),
-    'uri' => '/files/',
-    'multiple' => true,
-    'limit' => 2,
-    'allow_add' => true,
+    'upload_dir'   => '/absolute/system/path/to/upload/dir/web/uploads',
+    'uri'          => '/uploads/',
+    'multiple'     => true,
+    'limit'        => 2,
+    'allow_add'    => true,
     'allow_delete' => true,
 ]);
 ```
@@ -128,6 +124,7 @@ and the file size.
 * **include_filefield_options:** (boolean) (Default: true) Whether to include all of the parent filefield options in the sub-form options.
 * **allow_add:** (boolean) (Default: false) Whether to allow adding of files when multiple is set to true.
 * **allow_delete:** (boolean) (Default: false) Whether to allow removing of files when multiple is set to true.
+* **string_transformer:** (boolean) (Default: true) Whether to use the string to array transformer with single fields.
 
 ## How to Extend, Integrate, and Customize
 

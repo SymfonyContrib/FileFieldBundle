@@ -529,6 +529,9 @@
                     }
                 }
             }
+
+            // Remove progress indicator.
+            filefield.removeProgressBar($template);
         },
 
         renderFiles: function (files) {

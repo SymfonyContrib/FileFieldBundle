@@ -76,7 +76,7 @@
             <a href="{{ form.vars.is_prototype ? '' : file.uri|default('') }}" class="filefield-filename" target="_blank">{{ form.vars.is_prototype ? '' : file.name|default('')|trim(40) }}</a>
             {{ block('form_widget') }}
         </td>
-        <td class="filefield-filesize">{{ form.vars.is_prototype ? '' : file.size|default('') }}</td>
+        <td class="filefield-filesize filefield-progress">{{ form.vars.is_prototype ? '' : file.size|default('') }}</td>
         <td>
             <button type="button" class="btn btn-xs btn-danger filefield-remove">
                 <span class="glyphicon glyphicon-remove" title="Remove"></span> Remove
@@ -96,6 +96,7 @@
             <img src="{{ form.vars.is_prototype ? '' : file.iconUri|default('') }}" class="filefield-fileicon" alt="file icon">&nbsp;
             <a href="{{ file.uri|default('') }}" class="filefield-filename" target="_blank">{{ form.vars.is_prototype ? '' : file.name|default('')|trim(40) }}</a>&nbsp;
             (<span class="filefield-filesize">{{ form.vars.is_prototype ? '' : file.size|default('') }}</span>)&nbsp;
+            <span class="filefield-progress"></span>
             {{ block('form_widget') }}
             <button type="button" class="btn btn-xs btn-danger filefield-remove">
                 <span class="glyphicon glyphicon-remove" title="Remove"></span> Remove

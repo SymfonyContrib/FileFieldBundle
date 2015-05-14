@@ -5,7 +5,6 @@ namespace SymfonyContrib\Bundle\FileFieldBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use SymfonyContrib\Bundle\FileFieldBundle\Helper\UploadHelper;
 
@@ -14,11 +13,21 @@ use SymfonyContrib\Bundle\FileFieldBundle\Helper\UploadHelper;
  */
 class FileFieldSimpleType extends AbstractType
 {
+    /** @var UploadHelper */
     public $helper;
+
+    /** @var array */
+    public $defaultData;
 
     public function __construct(UploadHelper $helper)
     {
-        $this->helper = $helper;
+        $this->helper      = $helper;
+        $this->defaultData = [
+            'name'    => '',
+            'iconUri' => '',
+            'size'    => '',
+            'uri'     => '',
+        ];
     }
 
     /**
@@ -26,37 +35,18 @@ class FileFieldSimpleType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        global $kernel;
-
         $filefield = $options['filefield_options'];
+        $file      = $this->defaultData;
         $data      = $filefield['multiple'] ? $view->vars['value'] : $view->parent->vars['value'];
 
-        $uri  = '';
-        $file = [];
-        if (!empty($data) && ((is_array($data) && !empty($data['filename'])) || $data instanceof File)) {
-            if (is_array($data) && count($data) === 1 && isset($data['filename'])) {
-                $data = new File(realpath($kernel->getRootDir() . '/../web') . $data['filename']);
-            }
-
-            if (is_array($data) && count($data) >= 3) {
-                $name = $data['filename'];
-                $mime = $data['mime_type'];
-                $size = $data['size'];
-            } elseif ($data instanceof File) {
-                $name = $data->getFilename();
-                $mime = $data->getMimeType();
-                $size = $data->getSize();
-            } else {
-                throw new \Exception('Array or object expected.');
-            }
-            $uri  = isset($data['uri']) ? $data['uri'] : $filefield['uri'] . $name;
-            $icon = $this->helper->getFileIcon($mime);
-            $file = [
-                'name'    => $name,
-                'iconUri' => $this->helper->getIconUri() . $icon,
-                'size'    => $this->helper->formatSize($size),
-                'uri'     => $uri,
-            ];
+        if (is_string($data)) {
+            $file['uri']  = $data;
+            $file['name'] = basename($file['uri']);
+        } elseif (is_array($data)) {
+            $file['uri']  = isset($data['uri'])  ? $data['uri']  : array_pop($data);
+            $file['name'] = isset($data['name']) ? $data['name'] : basename($file['uri']);
+        } elseif (is_object($data)) {
+            $file = $this->convertObjectToViewArray($data);
         }
 
         $vars = [
@@ -65,7 +55,7 @@ class FileFieldSimpleType extends AbstractType
             'file'         => $file,
             'type'         => $filefield['type'] === 'filefield_simple' ? 'hidden' : $filefield['type'],
             'is_prototype' => ($view->vars['name'] === $filefield['prototype_name']),
-            'value'        => $uri,
+            'value'        => $file['uri'],
         ];
 
         $view->vars = array_replace($view->vars, $vars);
@@ -105,4 +95,26 @@ class FileFieldSimpleType extends AbstractType
         return 'filefield_simple';
     }
 
+    public function convertObjectToViewArray($object)
+    {
+        $file = $this->defaultData;
+
+        if (is_callable([$object, 'getFilename'])) {
+            $file['name'] = $object->getFilename();
+        }
+
+        if (is_callable([$object, 'getMimeType'])) {
+            $file['iconUri'] = $this->helper->getIconUri() . $this->helper->getFileIcon($object->getMimeType());
+        }
+
+        if (is_callable([$object, 'getSize'])) {
+            $file['size'] = $this->helper->formatSize($object->getSize());
+        }
+
+        if (is_callable([$object, 'getUri'])) {
+            $file['uri'] = $this->helper->formatSize($object->getUri());
+        }
+
+        return $file;
+    }
 }

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
+use SymfonyContrib\Bundle\FileFieldBundle\Form\DataTransformer\StringToArrayTransformer;
 
 /**
  * Advanced file form field.
@@ -51,6 +52,9 @@ class FileFieldType extends AbstractType
         } else {
             $name = $options['type'] === 'filefield_simple' ? 'filename' : $builder->getName();
             $builder->add($name, $options['type'], $options['options']);
+            if ($options['string_transformer']) {
+                $builder->addModelTransformer(new StringToArrayTransformer());
+            }
         }
     }
 
@@ -115,8 +119,6 @@ class FileFieldType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        global $kernel;
-
         $optionsNormalizer = function (Options $options, $value) {
             $value['block_name'] = 'entry';
 
@@ -126,8 +128,8 @@ class FileFieldType extends AbstractType
         $resolver->setDefaults([
             'multiple'                  => false,
             'limit'                     => 1,
-            'upload_dir'                => realpath($kernel->getRootDir() . '/../web/uploads'),
-            'uri'                       => '/uploads/',
+            'upload_dir'                => '/tmp',
+            'uri'                       => '/',
             'enable_cors'               => false,
             'js_options'                => [],
             'preview_type'              => null,
@@ -138,6 +140,12 @@ class FileFieldType extends AbstractType
             'allow_delete'              => false,
             'prototype'                 => true,
             'prototype_name'            => '__name__',
+            'string_transformer'         => true,
+        ]);
+
+        $resolver->setRequired([
+            'upload_dir',
+            'uri',
         ]);
 
         $resolver->setNormalizers(array(

@@ -11,7 +11,11 @@ var filefield = {};
     filefield = {
         setProgressBar: function ($template) {
             var bar = '<div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>';
-            $template.find('.filefield-filesize').append(bar);
+            $template.find('.filefield-progress').append(bar);
+        },
+
+        removeProgressBar: function ($template) {
+            $template.find('.filefield-progress').remove();
         },
 
         addRemoveListener: function () {
