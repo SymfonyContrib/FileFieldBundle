@@ -52,6 +52,7 @@ class FileFieldSimpleType extends AbstractType
         $vars = [
             'multiple'     => $filefield['multiple'],
             'preview_type' => $filefield['preview_type'],
+            'accept'       => $filefield['accept'] ? ' accept="' . $filefield['accept'] . '"' : '',
             'file'         => $file,
             'type'         => $filefield['type'] === 'filefield_simple' ? 'hidden' : $filefield['type'],
             'is_prototype' => ($view->vars['name'] === $filefield['prototype_name']),

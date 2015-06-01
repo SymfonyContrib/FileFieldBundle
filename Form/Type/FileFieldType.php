@@ -94,6 +94,7 @@ class FileFieldType extends AbstractType
         $view->vars = array_replace($view->vars, [
             'multiple'     => $options['multiple'],
             'limit'        => $options['limit'],
+            'accept'       => $options['accept'] ? ' accept="' . $options['accept'] . '"' : '',
             'data_attr'    => $dataAttr,
             'uri'          => $options['uri'],
             'preview_type' => $options['preview_type'],
@@ -133,6 +134,7 @@ class FileFieldType extends AbstractType
             'enable_cors'               => false,
             'js_options'                => [],
             'preview_type'              => null,
+            'accept'                    => '',
             'type'                      => 'filefield_simple',
             'options'                   => [],
             'include_filefield_options' => true,
