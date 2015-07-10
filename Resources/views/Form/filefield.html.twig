@@ -46,7 +46,7 @@
     <div class="filefield-upload btn btn-sm btn-primary fileinput-button"{{ block('filefield_widget_data_attributes') }}>
         <span class="glyphicon glyphicon-plus"></span>
         <span> Add file</span>
-        <input type="file" name="{{ form.vars.id }}"{{ accept }}{{ multiple ? ' multiple' : '' }}>
+        <input type="file" name="{{ form.vars.id }}"{{ accept|raw }}{{ multiple ? ' multiple' : '' }}>
     </div>
 {% endspaceless %}
 {% endblock %}
