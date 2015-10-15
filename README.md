@@ -33,6 +33,14 @@ http://symfony.com/doc/current/cookbook/bundles/installation.html
 new SymfonyContrib\Bundle\FileFieldBundle\FileFieldBundle(),
 ```
 
+Include the routing file:
+
+```yml
+# app/config/routing.yml
+filefield:
+    resource: "@FileFieldBundle/Resources/config/routing.yml"
+```
+
 * jQuery is required but not provided by this bundle.
 * Include JS files (order is important):
     * 'bundles/filefield/js/vendor/jquery.ui.widget.js' (only required if jQuery UI is not installed)
