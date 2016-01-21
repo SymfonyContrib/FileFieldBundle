@@ -28,16 +28,15 @@ class UploadController extends Controller
         $defaultUploadDir = realpath($kernel->getRootDir() . '/../web/uploads');
         $defaultUri       = '/uploads/';
 
-        $files = $request->files->all();
-
         // Fire the pre-move event.
-        $preMoveEvent = new UploadPreMoveEvent($files);
+        $preMoveEvent = new UploadPreMoveEvent($request);
         $dispatcher   = $this->get('event_dispatcher');
         $dispatcher->dispatch('filefield.upload.pre_move', $preMoveEvent);
 
         $session = $this->get('session');
         $helper  = $this->get('filefield.upload_helper');
 
+        $files     = $preMoveEvent->getFiles();
         $responses = [];
         foreach ($files as $formId => $file) {
             $ns        = 'filefield/' . $formId . '/';

@@ -6,15 +6,22 @@
 namespace SymfonyContrib\Bundle\FileFieldBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\HttpFoundation\Request;
 
 class UploadPreMoveEvent extends Event
 {
+    /** @var  array */
     protected $files;
+
+    /** @var bool */
     protected $move = true;
 
-    public function __construct($files)
+    /** @var Request */
+    private $request;
+
+    public function __construct(Request $request)
     {
-        $this->files = $files;
+        $this->request = $request;
     }
 
     /**
@@ -30,7 +37,7 @@ class UploadPreMoveEvent extends Event
      */
     public function getFiles()
     {
-        return $this->files;
+        return $this->files ?: $this->request->files->all();
     }
 
     public function preventDefaultMove($value = true)
