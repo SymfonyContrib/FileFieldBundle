@@ -17,11 +17,19 @@ class UploadPreMoveEvent extends Event
     protected $move = true;
 
     /** @var Request */
-    private $request;
+    protected $request;
 
     public function __construct(Request $request)
     {
         $this->request = $request;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
     /**
